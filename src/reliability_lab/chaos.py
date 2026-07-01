@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import random
+import time
 from pathlib import Path
 
 from reliability_lab.cache import ResponseCache, SharedRedisCache
@@ -93,7 +94,7 @@ def run_scenario(config: LabConfig, queries: list[str], scenario: ScenarioConfig
           - If route == "fallback": fallback_successes += 1, successful_requests += 1
           - If route == "static_fallback": static_fallbacks += 1, failed_requests += 1
           - Else: successful_requests += 1
-          - If result.latency_ms > 0: append to latencies_ms
+          - Append end-to-end gateway latency to latencies_ms
     4. Count circuit_open_count from breaker transition logs (entries where to == "open")
     5. Set recovery_time_ms via calculate_recovery_time_ms(gateway)
     6. Return metrics
@@ -104,7 +105,9 @@ def run_scenario(config: LabConfig, queries: list[str], scenario: ScenarioConfig
         return metrics
 
     for _ in range(config.load_test.requests):
+        started_at = time.perf_counter()
         result = gateway.complete(random.choice(queries))
+        end_to_end_latency_ms = (time.perf_counter() - started_at) * 1000
         metrics.total_requests += 1
         metrics.estimated_cost += result.estimated_cost
 
@@ -121,8 +124,7 @@ def run_scenario(config: LabConfig, queries: list[str], scenario: ScenarioConfig
         else:
             metrics.successful_requests += 1
 
-        if result.latency_ms > 0:
-            metrics.latencies_ms.append(result.latency_ms)
+        metrics.latencies_ms.append(end_to_end_latency_ms)
 
     metrics.circuit_open_count = sum(
         1

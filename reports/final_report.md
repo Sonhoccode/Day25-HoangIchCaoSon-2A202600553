@@ -31,10 +31,10 @@ User -> Gateway -> Semantic/Redis Cache --hit--> Response
 | SLI | Mục tiêu | Thực tế | Đạt? |
 |---|---:|---:|---|
 | Availability | >= 99% | 99.00% | Có |
-| Latency P95 | < 2500 ms | 318.32 ms | Có |
+| Latency P95 | < 2500 ms | 476.96 ms | Có |
 | Fallback success rate | >= 95% | 96.15% | Có |
 | Cache hit rate | >= 10% | 62.00% | Có |
-| Recovery time | < 5000 ms | 2464.751720428467 | Có |
+| Recovery time | < 5000 ms | 2462.848663330078 | Có |
 
 ## 4. Metrics tổng hợp
 
@@ -43,13 +43,13 @@ User -> Gateway -> Semantic/Redis Cache --hit--> Response
 | total_requests | 300 |
 | availability | 0.99 |
 | error_rate | 0.01 |
-| latency_p50_ms | 276.57 |
-| latency_p95_ms | 318.32 |
-| latency_p99_ms | 319.49 |
+| latency_p50_ms | 0.32 |
+| latency_p95_ms | 476.96 |
+| latency_p99_ms | 529.67 |
 | fallback_success_rate | 0.9615 |
 | cache_hit_rate | 0.62 |
 | circuit_open_count | 10 |
-| recovery_time_ms | 2464.751720428467 |
+| recovery_time_ms | 2462.848663330078 |
 | estimated_cost | 0.048694 |
 | estimated_cost_saved | 0.186 |
 
@@ -57,8 +57,8 @@ User -> Gateway -> Semantic/Redis Cache --hit--> Response
 
 | Metric | Không cache | Có cache | Delta |
 |---|---:|---:|---:|
-| latency_p50_ms | 218.12 | 218.45 | 0.3300 |
-| latency_p95_ms | 293.36 | 292.39 | -0.9700 |
+| latency_p50_ms | 220.88 | 190.35 | -30.5300 |
+| latency_p95_ms | 519.58 | 492.38 | -27.2000 |
 | estimated_cost | 0.021608 | 0.011714 | -0.0099 |
 | cache_hit_rate | 0.0 | 0.4 | 0.4000 |
 
